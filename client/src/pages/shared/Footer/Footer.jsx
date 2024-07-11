@@ -1,5 +1,5 @@
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from 'react-icons/fa';
-import logo from '../../../../public/Black and Green Flat Illustrated Organic Cosmetics Logo.gif';
+import logo from '../../../assets/Black and Green Flat Illustrated Organic Cosmetics Logo.gif';
 
 const Footer = () => {
     return (
