@@ -26,7 +26,7 @@ const Navbar = () => {
           } hover:text-teal-600 transition-all flex items-center`}
           onClick={() => handleLinkClick("/")}
         >
-          <FaHome className="mr-1" /> Home
+          <PiCowFill className="mr-1 text-red-600 text-xl" /><FaHome className="mr-1" /> Home
         </Link>
       </li>
       <li>
@@ -37,18 +37,18 @@ const Navbar = () => {
           } hover:text-teal-600 transition-all flex items-center`}
           onClick={() => handleLinkClick("/market")}
         >
-          <FaShoppingCart className="mr-1" /> Market
+          <GiGoat className="mr-1 text-red-600 text-xl" /><FaShoppingCart className="mr-1" /> Market
         </Link>
       </li>
       <li>
         <Link
-          to="/buying"
+          to="/purchase"
           className={`${
             activeLink === "/buying" ? "text-teal-600 text-lg font-bold" : "text-blue-500 text-lg font-bold"
           } hover:text-teal-600 transition-all flex items-center`}
-          onClick={() => handleLinkClick("/buying")}
+          onClick={() => handleLinkClick("/purchase")}
         >
-          <FaShoppingBasket className="mr-1" /> Buying
+          <GiCamel className="mr-1 text-red-600 text-xl" /><FaShoppingBasket className="mr-1" /> My Purchase
         </Link>
       </li>
       <li>
@@ -59,7 +59,7 @@ const Navbar = () => {
           } hover:text-teal-600 transition-all flex items-center`}
           onClick={() => handleLinkClick("/booking")}
         >
-          <IoIosBookmarks className="mr-1" /> Booking
+          <GiBuffaloHead className="mr-1 text-red-600 text-xl" /><IoIosBookmarks className="mr-1" /> My Booking
         </Link>
       </li>
     </>
@@ -78,11 +78,36 @@ const Navbar = () => {
         <div className="hidden lg:flex space-x-4">
           <ul className="menu menu-horizontal">{navOptions}</ul>
         </div>
-
+    {/* Menu for small devices */}
+<div className="dropdown lg:hidden">
+          <div tabIndex={0} role="button" className="btn btn-ghost">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              className="h-5 w-5"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
+            </svg>
+          </div>
+          <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
+            {navOptions}
+          </ul>
+        </div>
         {/* User profile section */}
         <div className="flex items-center space-x-5">
           
-
+        <div className="dropdown ">
+            <img
+              className="rounded-full cursor-pointer"
+              referrerPolicy="no-referrer"
+              src={user && user.photoURL ? user.photoURL : avatarImg}
+              alt="profile"
+              height="30"
+              width="30"
+            />
+          </div>
           {/* Authenticated user actions */}
           {user ? (
             <div
@@ -108,34 +133,6 @@ const Navbar = () => {
               </Link>
             </>
           )}
-
-<div className="dropdown ">
-            <img
-              className="rounded-full cursor-pointer"
-              referrerPolicy="no-referrer"
-              src={user && user.photoURL ? user.photoURL : avatarImg}
-              alt="profile"
-              height="30"
-              width="30"
-            />
-          </div>
-        </div>
-{/* Menu for small devices */}
-<div className="dropdown lg:hidden">
-          <div tabIndex={0} role="button" className="btn btn-ghost">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              className="h-5 w-5"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
-            >
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6h16M4 12h8m-8 6h16" />
-            </svg>
-          </div>
-          <ul className="menu menu-sm dropdown-content bg-base-100 rounded-box z-[1] mt-3 w-52 p-2 shadow">
-            {navOptions}
-          </ul>
         </div>
       </div>
     </div>

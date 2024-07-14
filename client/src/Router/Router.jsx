@@ -10,6 +10,7 @@ import SignUp from "../pages/signup/Signup";
 import CategoryCard from "../pages/Home/Category/CategoryCard";
 import AllMarket from "../componenets/allMarket/AllMarket";
 import BuyNow from '../componenets/buy now/BuyNow'
+import MyPurchase from "../componenets/MyPurchase/MyPurchase";
   export const router = createBrowserRouter([
     {
       path: "/",
@@ -33,8 +34,8 @@ import BuyNow from '../componenets/buy now/BuyNow'
             element: <BuyNow></BuyNow>
         },
         {
-            path: '/buying',
-            element: <BuyNow></BuyNow>
+            path: '/purchase',
+            element: <MyPurchase></MyPurchase>
         },
         {
           path: '/login', element: <Login />
