@@ -131,12 +131,24 @@ async function run() {
     })
 
 
-    // Save a room data in db
+    // Save a animal data in db
     app.post('/buy-now', async (req, res) => {
       const roomData = req.body
       const result = await buyCollection.insertOne(roomData)
       res.send(result)
     })
+
+    //my buying------
+    app.get('/myPurchase/:email', async (req, res) => {
+      console.log(req.params.email);   
+      try {
+          const result = await buyCollection.find({email: req.params.email}).toArray();           
+          res.send(result);
+      } catch (error) {
+          console.error('Error fetching assignments:', error);
+          res.status(500).send('Internal Server Error');
+      }
+  });
 
 
     // Send a ping to confirm a successful connection
