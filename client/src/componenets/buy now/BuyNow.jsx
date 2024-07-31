@@ -7,7 +7,7 @@ import { FiClock, FiDollarSign, FiMapPin, FiUser, FiFlag, FiPercent, FiAlignLeft
 import { Helmet } from 'react-helmet-async';
 import { AiOutlineUser, AiOutlineMail, AiOutlinePhone, AiOutlineHome, AiOutlineCalendar, AiOutlineClose } from 'react-icons/ai';
 import Modal from 'react-modal';
-import { GiConfirmed, GiCow } from 'react-icons/gi';
+import {  GiCow } from 'react-icons/gi';
 import Swal from 'sweetalert2';
 import 'sweetalert2/dist/sweetalert2.min.css';
 import cow from '../../assets/cow.gif';
@@ -15,9 +15,11 @@ import { MdDone } from 'react-icons/md'; // Importing the 'done' icon
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
+import {loadStripe} from '@stripe/stripe-js';
 Modal.setAppElement('#root');
-
+import { Elements } from "@stripe/react-stripe-js";
+import CheckOutForm from '../checkoutForm/CheckOutForm';
+const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 const BuyNow = () => {
     const { user } = useAuth();
     const { id } = useParams();
@@ -110,6 +112,10 @@ const BuyNow = () => {
     const handleSubmit = async (e) => {
         e.preventDefault();
     };
+
+      // Calculate the discounted price
+      const discountedPrice = buy.price - (buy.price * (buy.discount / 100));
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 grid place-items-center p-8">
             <Helmet>
@@ -130,7 +136,12 @@ const BuyNow = () => {
                         <div className="flex items-center text-lg">
                             <FiDollarSign className="mr-2 text-2xl text-green-500" />
                             <span>Price:</span>
-                            <span className="font-bold ml-2">${buy.price}</span>
+                            <span className="font-bold text-green-600  text-4xl ml-2">
+                                ${discountedPrice.toFixed(2)} 
+                                {buy.discount > 0 && (
+                                    <span className="line-through text-red-500 ml-2">${buy.price}</span>
+                                )}
+                            </span>
                         </div>
                         <div className="flex items-center text-lg">
                             <FiMapPin className="mr-2 text-2xl text-yellow-500" />
@@ -151,6 +162,11 @@ const BuyNow = () => {
                             <FiPercent className="mr-2 text-2xl text-pink-500" />
                             <span>Discount:</span>
                             <span className="font-bold ml-2">{buy.discount}%</span>
+                        </div>
+                        <div className="flex items-center text-lg">
+                            <FiPercent className="mr-2 text-2xl text-pink-500" />
+                            <span>Available Now</span>
+                            <span className="font-bold text-red-700 ml-2">{buy.status}</span>
                         </div>
                     </div>
                     <div className='flex justify-between items-center mt-8'>
@@ -259,8 +275,8 @@ const BuyNow = () => {
                     <button
   type="submit"
   onClick={openModal2}
-  className={`flex items-center justify-center gap-2 px-6 py-3 mt-4 text-white bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-full shadow-lg transform transition-transform hover:scale-110 hover:shadow-xl focus:outline-none ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-  disabled={loading}
+  className={`flex items-center justify-center gap-2 px-6 py-3 mt-4 text-white bg-gradient-to-r from-purple-400 via-pink-500 to-red-500 rounded-full shadow-lg transform transition-transform hover:scale-110 hover:shadow-xl focus:outline-none ${loading || buy.status === 'sold out' ? 'opacity-50 cursor-not-allowed' : ''}`}
+  disabled={loading || buy.status === 'sold out'}
 >
   <GiCow className="w-6 h-6" /> Submit Now
 </button>
@@ -332,7 +348,7 @@ const BuyNow = () => {
             <button
                 type="submit"
                 className={`btn btn-primary w-full p-3 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                disabled={loading}
+                disabled={loading }
             >
                 {loading ? 'Booking...' : 'Book Now'}
             </button>
@@ -340,94 +356,67 @@ const BuyNow = () => {
     </div>
 </Modal>
 
-            <Modal
-                isOpen={modalIsOpen2}
-                onRequestClose={closeModal2}
-                contentLabel="Booking Confirmation"
-                className="w-full max-w-md p-6 bg-white rounded-lg shadow-md mx-auto my-20 relative"
-                overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
-            >
-                <div className="max-w-md w-full p-6 bg-white rounded-lg shadow-md mx-auto">
-                    <h2 className="text-2xl font-bold mb-4">Purchase Confirmation</h2>
-                    <p className="mb-4">Are you sure you want to Purchase {buy.name}?</p>
-                    <form onSubmit={handleConfirmPurchase}>
-                        <div className="mb-4">
-                            <label className="block text-gray-700">Name:</label>
-                            <div className="flex items-center">
-                                <AiOutlineUser className="mr-2 text-xl text-gray-500" />
-                                <span>{name}</span>
-                            </div>
-                        </div>
-                        <form onSubmit={handleConfirmPurchase}>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Name:</label>
-                        <div className="flex items-center">
-                            <AiOutlineUser className="mr-2 text-xl text-gray-500" />
-                            <span>{name}</span>
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Email:</label>
-                        <div className="flex items-center">
-                            <AiOutlineMail className="mr-2 text-xl text-gray-500" />
-                            <span>{user?.email}</span>
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Phone:</label>
-                        <div className="flex items-center">
-                            <AiOutlinePhone className="mr-2 text-xl text-gray-500" />
-                            <span>{phoneNumber}</span>
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Address:</label>
-                        <div className="flex items-center">
-                            <AiOutlineHome className="mr-2 text-xl text-gray-500" />
-                            <span>{address}</span>
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Booking Date and Time:</label>
-                        <div className="flex items-center">
-                            <AiOutlineCalendar className="mr-2 text-xl text-gray-500" />
-                            <span>{new Date(dateTime).toLocaleString()}</span>
-                        </div>
-                    </div>
-                    <div className="mb-4">
-                        <label className="block text-gray-700">Card Details:</label>
-                        <div className="flex items-center justify-between">
-                            <img src={buy.image} alt={buy.name} className="w-24 h-24 object-cover rounded-lg mr-4" />
-                            <div>
-                                <h1 className="text-indigo-800 text-xl mb-2 font-bold">{buy.name}</h1>
-                                <div className="flex justify-between items-center space-x-4">
-                                    <span>Age:</span>
-                                    <span className="font-bold ml-2">{buy.age}</span>
-                                    <span>Price:</span>
-                                    <span className="font-bold text-2xl text-red-500 ml-2">${buy.price}</span>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-                <button
-  type="submit"
-  className={`flex w-full items-center justify-center gap-2 px-6 py-3 mt-4 text-white bg-gradient-to-r from-green-400 via-teal-500 to-blue-500 rounded-full shadow-lg transform transition-transform hover:scale-110 hover:shadow-xl focus:outline-none ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-  disabled={loading}
+<Modal
+    isOpen={modalIsOpen2}
+    onRequestClose={closeModal2}
+    contentLabel="Booking Confirmation"
+    className="w-full max-w-md sm:max-w-lg lg:max-w-xl p-6 bg-white rounded-lg shadow-md mx-auto my-20 relative overflow-y-auto"
+    overlayClassName="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center"
 >
-  {loading ? (
-    <span className="flex items-center gap-2">
-      <GiConfirmed className="w-6 h-6 animate-spin" /> Confirming...
-    </span>
-  ) : (
-    <span className="flex items-center gap-2">
-      <GiConfirmed className="w-6 h-6" /> Confirm Purchase
-    </span>
-  )}
-</button>
-                </form>
+    <div className="w-full p-2 bg-white rounded-lg shadow-md mx-auto">
+        <h2 className="text-2xl font-bold mb-2 text-center">Purchase Confirmation</h2>
+        <p className="mb-2 text-center">Are you sure you want to Purchase {buy.name}?</p>
+        <div >
+            <div className="mb-2">
+                <label className=" flex space-x-2 text-gray-700"> <AiOutlineUser className="mr-2 text-xl text-gray-500" />Name: <span className='text-md'>{name}</span></label> 
+            </div>
+            <div className="mb-2">
+                <label className=" flex space-x-2  text-gray-700">  <AiOutlineMail className="mr-2 text-xl text-gray-500" />Email: <span className='text-md'>{user?.email}</span></label> 
+                    
+               
+            </div>
+            <div className="mb-2">
+                <label className=" flex space-x-2  text-gray-700"><AiOutlinePhone className="mr-2 text-xl text-gray-500" />Phone: <span>{phoneNumber}</span></label>  
+
+            </div>
+            <div className="mb-2">
+                <label className="flex space-x-2  text-gray-700">  <AiOutlineHome className="mr-2 text-xl text-gray-500" />Address:  <span>{address}</span></label>
+                   
+            </div>
+            <div className="mb-2">
+                <label className="flex space-x-2  text-gray-700">  <AiOutlineCalendar className="mr-2 text-xl text-gray-500" />Booking Date and Time: <span>{new Date(dateTime).toLocaleString()}</span></label>
+                    
+            </div>
+            <div className="mb-2">
+                <label className="block text-center text-gray-700">Card Details:</label>
+                <div className="flex items-center justify-between">
+                    <img src={buy.image} alt={buy.name} className="w-24 h-24 object-cover rounded-lg mr-4" />
+                    <div>
+                        <h1 className="text-indigo-800 text-xl mb-2 font-bold">{buy.name}</h1>
+                        <div className="flex justify-between items-center space-x-4">
+                            <span>Age:</span>
+                            <span className="font-bold ml-2">{buy.age}</span>
+                            <div className="flex items-center text-lg">
+                            <FiDollarSign className="mr-2 text-2xl text-green-500" />
+                            <span>Price:</span>
+                            <span className="font-bold text-green-600  ml-2">
+                                ${discountedPrice.toFixed(2)} 
+                                {buy.discount > 0 && (
+                                    <span className="line-through text-red-500 ml-2">${buy.price}</span>
+                                )}
+                            </span>
+                        </div>
+                        </div>
+                    </div>
                 </div>
-            </Modal>
+            </div>
+            <Elements stripe={stripePromise}>
+                <CheckOutForm closeModal2={closeModal2} loading={loading}  discountedPrice={discountedPrice} buy={buy} />
+            </Elements>
+           
+        </div>
+    </div>
+</Modal>
         </div>
     );
 }

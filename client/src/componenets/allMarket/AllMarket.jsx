@@ -5,7 +5,7 @@ import { useState } from "react";
 import { FiEye, FiX, FiArrowDown, FiArrowUp, FiShoppingCart, FiArrowLeft, FiArrowRight, FiDollarSign, FiClock, FiMapPin, FiUser, FiFlag, FiPercent } from "react-icons/fi";
 import ReactPaginate from 'react-paginate';
 import { Link } from "react-router-dom";
-
+import { FaCheckCircle } from 'react-icons/fa';
 const AllMarket = () => {
     const axiosCommon = useAxiosCommon();
     const [selectedItem, setSelectedItem] = useState(null);
@@ -77,6 +77,7 @@ const AllMarket = () => {
                                 <p className="flex items-center text-lg"><FiUser className="mr-2 text-xl text-orange-500" />Owner Name: <span className="font-bold ml-2">{item.owner_name}</span></p>
                                 <p className="flex items-center text-lg"><FiFlag className="mr-2 text-xl text-red-500" />Country: <span className="font-bold ml-2">{item.country}</span></p>
                                 <p className="flex items-center text-lg"><FiPercent className="mr-2 text-xl text-pink-500" />Discount: <span className="font-bold ml-2">{item.discount}%</span></p>
+                                <p className="flex items-center text-lg"><FaCheckCircle className="mr-2 text-xl text-pink-500" />Available Now <span className="font-bold text-red-700 ml-2">{item.status}</span></p>
                             </div>
                             <div className="card-actions justify-between mt-4">
                                 <button onClick={() => handleOpenModal(item)} className="btn btn-primary bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300 flex items-center">

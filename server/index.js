@@ -5,7 +5,7 @@ const cors = require('cors');
 const cookieParser = require('cookie-parser');
 const { MongoClient, ServerApiVersion, ObjectId } = require('mongodb');
 const jwt = require('jsonwebtoken');
-
+const stripe = require("stripe")(process.env.VITE_SECRET_KEY)
 const port = process.env.PORT || 8000;
 
 // Middleware
@@ -131,12 +131,27 @@ async function run() {
     })
 
 
-    // Save a animal data in db
-    app.post('/buy-now', async (req, res) => {
-      const roomData = req.body
-      const result = await buyCollection.insertOne(roomData)
-      res.send(result)
-    })
+    app.post('/buyNow', verifyToken, async (req, res) => {
+      const buyData = req.body;
+      try {
+        // Save products booking info
+        const result = await buyCollection.insertOne(buyData);
+    
+        // Change animal status
+        const animalId = buyData?.animalId;
+        const query = { _id: new ObjectId(animalId) };
+        const updateDoc = {
+          $set: { status: 'sold out' },
+        };
+        const updateProducts = await allCollection.updateOne(query, updateDoc);
+        console.log(updateProducts);
+    
+        res.send({ result, updateProducts });
+      } catch (error) {
+        console.error(error);
+        res.status(500).send({ error: 'An error occurred while processing the request.' });
+      }
+    });
 
     //my buying------
     app.get('/myPurchase/:email', async (req, res) => {
@@ -149,6 +164,25 @@ async function run() {
           res.status(500).send('Internal Server Error');
       }
   });
+
+  //-----user payment -------
+      // create-payment-intent
+      app.post('/create-payment-intent', verifyToken, async (req, res) => {
+        const price = req.body.price
+        const priceInCent = parseFloat(price) * 100
+        if (!price || priceInCent < 1) return
+        // generate clientSecret
+        const { client_secret } = await stripe.paymentIntents.create({
+          amount: priceInCent,
+          currency: 'usd',
+          // In the latest version of the API, specifying the `automatic_payment_methods` parameter is optional because Stripe enables its functionality by default.
+          automatic_payment_methods: {
+            enabled: true,
+          },
+        })
+        // send client secret as response
+        res.send({ clientSecret: client_secret })
+      })
 
 
     // Send a ping to confirm a successful connection
