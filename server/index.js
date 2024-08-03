@@ -153,17 +153,17 @@ async function run() {
       }
     });
 
-    //my buying------
-    app.get('/myPurchase/:email', async (req, res) => {
-      console.log(req.params.email);   
-      try {
-          const result = await buyCollection.find({email: req.params.email}).toArray();           
-          res.send(result);
-      } catch (error) {
-          console.error('Error fetching assignments:', error);
-          res.status(500).send('Internal Server Error');
-      }
-  });
+    // My buying
+app.get('/myPurchase/:email', async (req, res) => {
+  console.log(req.params.email);   
+  try {
+      const result = await buyCollection.find({ userEmail: req.params.email }).toArray();           
+      res.send(result);
+  } catch (error) {
+      console.error('Error fetching purchases:', error);
+      res.status(500).send('Internal Server Error');
+  }
+});
 
   //-----user payment -------
       // create-payment-intent

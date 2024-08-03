@@ -6,8 +6,10 @@ import { GiCow } from 'react-icons/gi';
 import { useEffect, useState } from 'react';
 import useAxiosSecure from '../../hooks/useAxiosSecure';
 import useAuth from '../../hooks/useAuth';
+import { useNavigate } from 'react-router-dom';
+import Swal from 'sweetalert2';
 
-const CheckOutForm = ({ closeModal2, loading, buy, discountedPrice }) => {
+const CheckOutForm = ({ closeModal2, loading, buy, discountedPrice,refetch }) => {
   const stripe = useStripe();
   const elements = useElements();
   const axiosSecure = useAxiosSecure();
@@ -15,6 +17,7 @@ const CheckOutForm = ({ closeModal2, loading, buy, discountedPrice }) => {
   const [clientSecret, setClientSecret] = useState();
   const [cardError, setCardError] = useState('');
   const [processing, setProcessing] = useState(false);
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (buy?.price && buy?.price > 1) {
@@ -82,6 +85,9 @@ const CheckOutForm = ({ closeModal2, loading, buy, discountedPrice }) => {
         transactionId: paymentIntent.id,
         animalId: buy._id,
         date: new Date(),
+        userEmail: user?.email,
+        userName: user?.displayName,
+        delivery: `On The Way`
       };
       delete paymentInfo._id;
       console.log(paymentInfo);
@@ -89,6 +95,21 @@ const CheckOutForm = ({ closeModal2, loading, buy, discountedPrice }) => {
       try {
         const response = await axiosSecure.post('buyNow', paymentInfo);
         console.log('Purchase response:', response.data);
+
+
+        // Show success alert using SweetAlert2
+        Swal.fire({
+          icon: 'success',
+          title: '🎉 Purchase Successful 🎉',
+          html: `<p style="color: #424770; font-weight: bold;">Your purchase of $${discountedPrice.toFixed(2)} was successful!</p>
+                 <p style="color: #424770; font-weight: bold;">Thanks for buying 🐄 🐐 🐃 🐪! Come back next time! 😊</p>`,
+          showConfirmButton: false,
+          timer: 5000,
+        });
+
+        refetch();
+        closeModal2();
+        navigate('/purchase');
       } catch (error) {
         console.log('Purchase error:', error);
       }

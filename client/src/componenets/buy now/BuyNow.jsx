@@ -13,7 +13,6 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import cow from '../../assets/cow.gif';
 import { MdDone } from 'react-icons/md'; // Importing the 'done' icon
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
 import {loadStripe} from '@stripe/stripe-js';
 Modal.setAppElement('#root');
@@ -35,7 +34,7 @@ const BuyNow = () => {
     const axiosSecure = useAxiosSecure();
     const navigate = useNavigate();
 
-    const { data: buy = {} } = useQuery({
+    const { data: buy = {} ,refetch} = useQuery({
         queryKey: ['buy', id],
         queryFn: async () => {
             const res = await axiosCommon.get(`/buy-details/${id}`);
@@ -65,50 +64,8 @@ const BuyNow = () => {
         });
     };
 
-    const { mutateAsync } = useMutation({
-        mutationFn: async buyData => {
-            const { data } = await axiosSecure.post(`/buy-now`, buyData);
-            return data;
-        },
-        onSuccess: () => {
-            navigate('/purchase');
-            setLoading(false);
-        },
-    });
-
-    const handleConfirmPurchase = async (e) => {
-        e.preventDefault();
-
-        if (!name || !phoneNumber || !dateTime) {
-            toast.error('Please fill out all required fields.');
-            return;
-        }
-
-        setLoading(true);
-
-        try {
-            const purchaseData = {
-                name,
-                email: user?.email,
-                phone: phoneNumber,
-                address: buy.address, // Ensure this is correct based on your data structure
-                image: buy.image,
-                dateTime,
-                buy,
-            };
-
-            await mutateAsync(purchaseData);
-
-            toast.success('Your purchase has been successfully completed!');
-            setIsBooked(true);
-            closeModal2();
-        } catch (err) {
-            console.error(err);
-            toast.error('Failed to complete the purchase. Please try again.');
-        } finally {
-            setLoading(false);
-        }
-    };
+    
+    
     const handleSubmit = async (e) => {
         e.preventDefault();
     };
@@ -411,7 +368,7 @@ const BuyNow = () => {
                 </div>
             </div>
             <Elements stripe={stripePromise}>
-                <CheckOutForm closeModal2={closeModal2} loading={loading}  discountedPrice={discountedPrice} buy={buy} />
+                <CheckOutForm closeModal2={closeModal2} refetch={refetch} loading={loading}  discountedPrice={discountedPrice} buy={buy} />
             </Elements>
            
         </div>
