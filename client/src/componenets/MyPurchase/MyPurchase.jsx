@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
-import { FaCar } from 'react-icons/fa';
+import { FaCalendarAlt, FaMoneyCheckAlt, FaShippingFast, FaCheckCircle, FaTruck } from 'react-icons/fa';
 import { useEffect } from "react";
 
 const MyPurchase = () => {
@@ -19,45 +19,63 @@ const MyPurchase = () => {
         const carIcons = document.querySelectorAll(".car-icon");
         carIcons.forEach(icon => {
             if (icon.getAttribute("data-delivery") === "On The Way") {
-                icon.classList.add("animate-bounce", "text-yellow-500");
+                icon.classList.add("animate-bounce", "text-blue-500");
             }
         });
     }, [purchase]);
 
     return (
         <div className="p-4">
-            <h1 className="text-2xl font-bold mb-4">Total Purchases:{purchase.length}</h1>
+            <h1 className="text-3xl text-center font-bold mb-6 text-gradient">Total Purchases: {purchase.length}</h1>
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
-                <table className="table-auto w-full text-left">
-                    <thead className="bg-gray-200">
+                <table className="table-auto w-full text-center">
+                    <thead className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
                         <tr>
-                            <th className="px-4 py-2">#</th>
-                            <th className="px-4 py-2">Image</th>
-                            <th className="px-4 py-2">Name</th>
-                            <th className="px-4 py-2">Date And Time</th>
-                            <th className="px-4 py-2">Transaction Id</th>
-                            <th className="px-4 py-2">Deliver</th>
+                            <th className="px-4 py-3">#</th>
+                            <th className="px-4 py-3">Image</th>
+                            <th className="px-4 py-3">Name</th>
+                            <th className="px-4 py-3">Date And Time</th>
+                            <th className="px-4 py-3">Transaction Id</th>
+                            <th className="px-4 py-3">Deliver</th>
                         </tr>
                     </thead>
                     <tbody>
                         {purchase.map((item, index) => (
-                            <tr key={item.id || index} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-white'} hover:bg-gray-100`}>
-                                <td className="border px-4 py-2 font-bold text-xl">{index + 1}</td>
-                                <td className="border px-4 py-2">
-                                    <div className="flex items-center gap-3">
+                            <tr key={item.id || index} className={`${index % 2 === 0 ? 'bg-gray-50' : 'bg-gray-100'} hover:bg-gradient-to-r from-green-100 to-blue-100 transition duration-300 ease-in-out`}>
+                                <td className="px-4 py-2 font-bold text-xl">{index + 1}</td>
+                                <td className="px-4 py-2">
+                                    <div className="flex justify-center items-center gap-3">
                                         <div className="avatar">
-                                            <div className="mask mask-squircle h-12 w-12">
-                                                <img src={item.buy?.image} alt="Avatar" />
+                                            <div className="mask mask-squircle h-14 w-14">
+                                                {/* Check if the image URL is valid */}
+                                                <img src={item.image} alt="Animal" className="object-cover w-full h-full" />
                                             </div>
                                         </div>
                                     </div>
                                 </td>
-                                <td className="border px-4 py-2 font-bold text-xl">{item.name}</td>
-                                <td className="border px-4 py-2">{item.date}</td>
-                                <td className="border px-4 py-2">{item.id}</td>
-                                <td className="border px-4 py-2 flex items-center">
-                                    <FaCar className={`text-xl mr-2 car-icon`} data-delivery={item.delivery} /> 
-                                    <span className="font-bold text-xl">{item.delivery}</span>
+                                <td className="px-4 py-2 font-bold text-xl">{item.name}</td>
+                                <td className="px-4 py-2 flex justify-center items-center gap-2">
+                                    <FaCalendarAlt className="text-blue-500" />
+                                    {new Date(item.date).toLocaleString()}
+                                </td>
+                                <td className="px-4 py-2">
+                                    <div className="flex justify-center items-center gap-2">
+                                        <FaMoneyCheckAlt className="text-green-500" />
+                                        {item.transactionId}
+                                    </div>
+                                </td>
+                                <td className="px-4 py-2 flex justify-center items-center gap-2 mt-2">
+                                    {item.delivery === "On The Way" ? (
+                                        <>
+                                            <FaTruck className="text-2xl car-icon text-blue-500" data-delivery={item.delivery} />
+                                            <span className="font-bold text-xl text-blue-500">{item.delivery}</span>
+                                        </>
+                                    ) : (
+                                        <>
+                                            <FaCheckCircle className="text-2xl text-green-500" />
+                                            <span className="font-bold text-xl text-green-500">Delivery Successful</span>
+                                        </>
+                                    )}
                                 </td>
                             </tr>
                         ))}

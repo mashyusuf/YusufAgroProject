@@ -72,7 +72,30 @@ const BuyNow = () => {
 
       // Calculate the discounted price
       const discountedPrice = buy.price - (buy.price * (buy.discount / 100));
+//POST FOR BOOKING---------
+const handleBookingNow = async (e) => {
+    e.preventDefault();
+    setLoading(true);
 
+    const bookingItem = {
+        email: user.email,
+        name,
+        phone: phoneNumber,
+        date: dateTime,
+        buy
+    };
+
+    try {
+        await axiosSecure.post('/bookingNow', bookingItem);
+        closeModal();
+        Swal.fire('Success', 'Booking successful!', 'success');
+    } catch (error) {
+        console.error('Error booking item:', error);
+        Swal.fire('Error', 'Booking failed. Please try again.', 'error');
+    } finally {
+        setLoading(false);
+    }
+}
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 grid place-items-center p-8">
             <Helmet>
@@ -243,75 +266,69 @@ const BuyNow = () => {
             <Modal
     isOpen={modalIsOpen}
     onRequestClose={closeModal}
-    contentLabel="Booking Modal"
-    className="fixed inset-0 flex items-center justify-center bg-gray-800 bg-opacity-75"
+    contentLabel="Booking Confirmation"
+    className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
 >
-    <div className="bg-white p-8 md:p-10 rounded-lg shadow-lg w-full md:max-w-md">
-        <div className="flex justify-end">
-            <button
-                onClick={closeModal}
-                className="text-gray-500 hover:text-gray-700 focus:outline-none"
-            >
-                <AiOutlineClose className="text-2xl" />
-            </button>
-        </div>
-        <h2 className="text-2xl font-bold mb-4 text-center">Book Your Item</h2>
-        <form onSubmit={handleBooking} className="space-y-4">
-            {/* Your booking form */}
-            <div className="flex items-center space-x-2">
-                <span className="text-gray-500">
-                    <AiOutlineUser />
-                </span>
+    <div className="bg-white rounded-lg p-8 max-w-lg mx-auto relative shadow-lg">
+        <button
+            onClick={closeModal}
+            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+        >
+            <AiOutlineClose className="text-2xl" />
+        </button>
+        <h2 className="text-2xl font-bold mb-4 text-indigo-800">Booking Confirmation</h2>
+        <form onSubmit={handleBookingNow}>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+                    Name
+                </label>
                 <input
                     type="text"
                     id="name"
-                    name="name"
+                    placeholder='Name'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
-                    placeholder="Enter your name"
-                    className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-lg focus:outline-none focus:bg-white"
                     required
+                    className="w-full px-3 py-2 border rounded-lg border-gray-300"
                 />
             </div>
-            <div className="flex items-center space-x-2">
-                <span className="text-gray-500">
-                    <AiOutlinePhone />
-                </span>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">
+                    Phone Number
+                </label>
                 <input
-                    type="tel"
-                    id="phone"
-                    name="phone"
+                    type="text"
+                    id="phoneNumber"
+                    placeholder='Phone Number'
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
-                    placeholder="Enter your phone number"
-                    className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-lg focus:outline-none focus:bg-white"
                     required
+                    className="w-full px-3 py-2 border rounded-lg border-gray-300"
                 />
             </div>
-            <div className="flex items-center space-x-2">
-                <span className="text-gray-500">
-                    <AiOutlineCalendar />
-                </span>
+            <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dateTime">
+                    Date and Time
+                </label>
                 <input
                     type="datetime-local"
-                    id="datetime"
-                    name="datetime"
+                    id="dateTime"
                     value={dateTime}
                     onChange={(e) => setDateTime(e.target.value)}
-                    className="w-full px-4 py-2 text-gray-700 bg-gray-200 rounded-lg focus:outline-none focus:bg-white"
                     required
+                    className="w-full px-3 py-2 border rounded-lg border-gray-300"
                 />
             </div>
             <button
                 type="submit"
-                className={`btn btn-primary w-full p-3 ${loading ? 'opacity-50 cursor-not-allowed' : ''}`}
-                disabled={loading }
+                className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
             >
-                {loading ? 'Booking...' : 'Book Now'}
+                Confirm Booking
             </button>
         </form>
     </div>
 </Modal>
+
 
 <Modal
     isOpen={modalIsOpen2}

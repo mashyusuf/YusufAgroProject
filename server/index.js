@@ -51,6 +51,7 @@ async function run() {
     const categoryCollection = client.db('yusufagrodb').collection('category');
     const allCollection = client.db('yusufagrodb').collection('animal')
     const buyCollection = client.db('yusufagrodb').collection('buy-now')
+    const bookingCollection = client.db('yusufagrodb').collection('bookingItem')
    
     
     
@@ -183,6 +184,13 @@ app.get('/myPurchase/:email', async (req, res) => {
         // send client secret as response
         res.send({ clientSecret: client_secret })
       })
+
+      //Booking To Database--------
+    app.post('/bookingNow', async (req, res) => {
+      const cartItem = req.body;
+      const result = await bookingCollection.insertOne(cartItem);
+      res.send(result);
+    });
 
 
     // Send a ping to confirm a successful connection
