@@ -11,6 +11,7 @@ import CategoryCard from "../pages/Home/Category/CategoryCard";
 import AllMarket from "../componenets/allMarket/AllMarket";
 import BuyNow from '../componenets/buy now/BuyNow'
 import MyPurchase from "../componenets/MyPurchase/MyPurchase";
+import MyBooking from "../componenets/myBooking/MyBooking";
   export const router = createBrowserRouter([
     {
       path: "/",
@@ -36,6 +37,10 @@ import MyPurchase from "../componenets/MyPurchase/MyPurchase";
         {
             path: '/purchase',
             element: <MyPurchase></MyPurchase>
+        },
+        {
+            path: '/booking',
+            element: <MyBooking></MyBooking>
         },
         {
           path: '/login', element: <Login />

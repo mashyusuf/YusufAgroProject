@@ -82,20 +82,36 @@ const handleBookingNow = async (e) => {
         name,
         phone: phoneNumber,
         date: dateTime,
-        buy
+        buy,
+        request : 'pending'
     };
 
     try {
         await axiosSecure.post('/bookingNow', bookingItem);
         closeModal();
-        Swal.fire('Success', 'Booking successful!', 'success');
+        Swal.fire({
+            title: '🎉 Congratulations! 🎉',
+            text: 'Your booking request was successfully sent. Please wait for admin approval. Thank you for choosing our service!',
+            icon: 'success',
+            confirmButtonText: 'OK',
+            confirmButtonColor: '#3085d6',
+            footer: '<p>We will notify you once the admin reviews your request.</p>',
+        });
     } catch (error) {
         console.error('Error booking item:', error);
-        Swal.fire('Error', 'Booking failed. Please try again.', 'error');
+        Swal.fire({
+            title: '😞 Oops!',
+            text: 'Booking failed. Please try again later.',
+            icon: 'error',
+            confirmButtonText: 'Retry',
+            confirmButtonColor: '#d33',
+            footer: '<p>If the problem persists, contact our support team.</p>',
+        });
     } finally {
         setLoading(false);
     }
-}
+};
+
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 grid place-items-center p-8">
             <Helmet>
@@ -156,17 +172,17 @@ const handleBookingNow = async (e) => {
                             <span>{buy.description}</span>
                         </p>
                         <button
-                            className={`btn btn-outline btn-info text-black flex border-0 text-xl items-center ${isBooked ? ' bg-yellow-400 ' : ''}`}
+                            className={`btn btn-outline btn-info text-black flex border-0 text-md items-center ${isBooked ? ' bg-yellow-400 ' : ''}`}
                             onClick={openModal}
                         >
                             {isBooked ? (
                                 <>
-                                    <MdDone className="text-white mr-2" /> Booking Done
+                                    <MdDone className="text-white mr-2" /> Request Done
                                 </>
                             ) : (
                                 <>
                                     <img src={cow} alt="Cow" className="w-6 h-6 mr-2 animate-pulse" />
-                                    Booking Now
+                                   Request For Booking Now
                                 </>
                             )}
                         </button>
@@ -267,47 +283,47 @@ const handleBookingNow = async (e) => {
     isOpen={modalIsOpen}
     onRequestClose={closeModal}
     contentLabel="Booking Confirmation"
-    className="fixed inset-0 flex items-center justify-center p-4 bg-gray-900 bg-opacity-50"
+    className="fixed inset-0 flex items-center justify-center p-6 bg-black bg-opacity-60"
 >
-    <div className="bg-white rounded-lg p-8 max-w-lg mx-auto relative shadow-lg">
+    <div className="bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 rounded-xl p-10 max-w-xl mx-auto relative shadow-2xl transform scale-105">
         <button
             onClick={closeModal}
-            className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            className="absolute top-3 right-3 text-white hover:text-red-300"
         >
-            <AiOutlineClose className="text-2xl" />
+            <AiOutlineClose className="text-3xl" />
         </button>
-        <h2 className="text-2xl font-bold mb-4 text-indigo-800">Booking Confirmation</h2>
+        <h2 className="text-3xl font-extrabold mb-6 text-white drop-shadow-md">🎉 Booking Confirmation 🎉</h2>
         <form onSubmit={handleBookingNow}>
-            <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="name">
+            <div className="mb-5">
+                <label className="block text-white text-lg font-semibold mb-2" htmlFor="name">
                     Name
                 </label>
                 <input
                     type="text"
                     id="name"
-                    placeholder='Name'
+                    placeholder='Enter your name'
                     value={name}
                     onChange={(e) => setName(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border rounded-lg border-gray-300"
+                    className="w-full px-4 py-3 border-none rounded-lg shadow-md text-gray-800 focus:ring-2 focus:ring-indigo-300"
                 />
             </div>
-            <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phoneNumber">
+            <div className="mb-5">
+                <label className="block text-white text-lg font-semibold mb-2" htmlFor="phoneNumber">
                     Phone Number
                 </label>
                 <input
                     type="text"
                     id="phoneNumber"
-                    placeholder='Phone Number'
+                    placeholder='Enter your phone number'
                     value={phoneNumber}
                     onChange={(e) => setPhoneNumber(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border rounded-lg border-gray-300"
+                    className="w-full px-4 py-3 border-none rounded-lg shadow-md text-gray-800 focus:ring-2 focus:ring-indigo-300"
                 />
             </div>
-            <div className="mb-4">
-                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="dateTime">
+            <div className="mb-6">
+                <label className="block text-white text-lg font-semibold mb-2" htmlFor="dateTime">
                     Date and Time
                 </label>
                 <input
@@ -316,18 +332,19 @@ const handleBookingNow = async (e) => {
                     value={dateTime}
                     onChange={(e) => setDateTime(e.target.value)}
                     required
-                    className="w-full px-3 py-2 border rounded-lg border-gray-300"
+                    className="w-full px-4 py-3 border-none rounded-lg shadow-md text-gray-800 focus:ring-2 focus:ring-indigo-300"
                 />
             </div>
             <button
                 type="submit"
-                className="w-full px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600"
+                className="w-full px-6 py-3 bg-green-600 text-white font-bold rounded-lg hover:bg-green-700 transform hover:scale-105 transition-transform"
             >
                 Confirm Booking
             </button>
         </form>
     </div>
 </Modal>
+
 
 
 <Modal

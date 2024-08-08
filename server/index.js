@@ -191,7 +191,22 @@ app.get('/myPurchase/:email', async (req, res) => {
       const result = await bookingCollection.insertOne(cartItem);
       res.send(result);
     });
-
+    app.get('/bookingItem/:email', async (req, res) => {  
+      try {
+          const result = await bookingCollection.find({ email: req.params.email }).toArray(); // Changed userEmail to email           
+          res.send(result);
+      } catch (error) {
+          console.error('Error fetching bookings:', error);
+          res.status(500).send('Internal Server Error');
+      }
+    });
+  //delete booking
+  app.delete('/bookingItemDelete/:id',verifyToken ,async (req,res)=>{
+    const id = req.params.id;
+    const query = {_id: new ObjectId(id)}
+    const result =await bookingCollection.deleteOne(query);
+    res.send(result)
+  })    
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });

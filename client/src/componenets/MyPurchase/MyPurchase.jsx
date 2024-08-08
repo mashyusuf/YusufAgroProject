@@ -1,7 +1,7 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
-import { FaCalendarAlt, FaMoneyCheckAlt, FaShippingFast, FaCheckCircle, FaTruck } from 'react-icons/fa';
+import { FaCalendarAlt, FaMoneyCheckAlt,  FaCheckCircle, FaTruck } from 'react-icons/fa';
 import { useEffect } from "react";
 
 const MyPurchase = () => {

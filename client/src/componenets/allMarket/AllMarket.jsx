@@ -80,7 +80,7 @@ const AllMarket = () => {
                                 <p className="flex items-center text-lg"><FaCheckCircle className="mr-2 text-xl text-pink-500" />Available Now <span className="font-bold text-red-700 ml-2">{item.status}</span></p>
                             </div>
                             <div className="card-actions justify-between mt-4">
-                                <button onClick={() => handleOpenModal(item)} className="btn btn-primary bg-indigo-600 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300 flex items-center">
+                                <button onClick={() => handleOpenModal(item)} className="btn btn-primary bg-indigo-600 border-0 text-white px-4 py-2 rounded hover:bg-indigo-700 transition duration-300 flex items-center">
                                     <FiEye className="mr-2" /> View
                                 </button>
                                 <Link to={`/buyNow/${item._id}`}> 
