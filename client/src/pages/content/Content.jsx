@@ -20,11 +20,11 @@ const Content = () => {
     };
 
     return (
-        <section className="bg-gradient-to-r from-sky-300 to-sky-100 py-12 mt-10">
+        <section className="bg-gradient-to-r from-sky-300 to-sky-100 max-w-7xl mx-auto rounded-md  mb-10 py-12 mt-10">
             <div className="container mx-auto px-4">
                 <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">Care Guides</h2>
                 <p className="text-center mb-12 text-gray-700">Learn how to care for our animals with our comprehensive guides.</p>
-                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-8">
+                <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                     {/* Cow Care Guide */}
                     <div className="bg-white p-6 rounded-lg shadow-lg hover:shadow-xl transition-shadow duration-300 relative">
                         <img src={cow} alt="Cow" className="w-full h-40 object-cover rounded-t-lg mb-4" />

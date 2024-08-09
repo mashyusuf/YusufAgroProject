@@ -1,22 +1,13 @@
-import PropTypes from 'prop-types'
-import { ScaleLoader } from 'react-spinners'
 
-const LoadingSpinner = ({ smallHeight }) => {
+
+const LoadingSpiner = () => {
   return (
-    <div
-      className={` ${smallHeight ? 'h-[250px]' : 'h-[70vh]'}
-      flex 
-      flex-col 
-      justify-center 
-      items-center `}
-    >
-      <ScaleLoader size={100} color='red' />
+    <div>
+      <div className="flex items-center justify-center min-h-screen">
+                <span className="loading text-4xl loading-spinner text-info"></span>
+            </div>
     </div>
-  )
-}
+  );
+};
 
-LoadingSpinner.propTypes = {
-  smallHeight: PropTypes.bool,
-}
-
-export default LoadingSpinner
+export default LoadingSpiner;

@@ -7,7 +7,7 @@ import { useEffect } from "react";
 const MyPurchase = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const { data: purchase = [] } = useQuery({
+    const { data: purchase = [],isLoading } = useQuery({
         queryKey: ['purchase'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/myPurchase/${user?.email}`);
@@ -23,7 +23,11 @@ const MyPurchase = () => {
             }
         });
     }, [purchase]);
-
+    if(isLoading){
+        return <div className="flex items-center justify-center min-h-screen">
+        <span className="loading text-9xl loading-spinner text-info"></span>
+    </div>
+    }
     return (
         <div className="p-4">
             <h1 className="text-3xl text-center font-bold mb-6 text-gradient">Total Purchases: {purchase.length}</h1>

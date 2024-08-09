@@ -13,7 +13,7 @@ const AllMarket = () => {
     const [currentPage, setCurrentPage] = useState(0);
     const itemsPerPage = 6;
 
-    const { data: allData = [] } = useQuery({
+    const { data: allData = [],isLoading } = useQuery({
         queryKey: ['data'],
         queryFn: async () => {
             const res = await axiosCommon.get('all');
@@ -46,7 +46,11 @@ const AllMarket = () => {
     const startIndex = currentPage * itemsPerPage;
     const pageCount = Math.ceil(sortedData.length / itemsPerPage);
     const currentPageData = sortedData.slice(startIndex, startIndex + itemsPerPage);
-
+    if(isLoading){
+        return <div className="flex items-center justify-center min-h-screen">
+        <span className="loading text-9xl loading-spinner text-info"></span>
+    </div>
+    }
     return (
         <div>
             <Helmet>

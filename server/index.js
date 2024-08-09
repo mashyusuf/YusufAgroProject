@@ -93,7 +93,6 @@ async function run() {
     app.get('/category', async (req, res) => {
       const result = await categoryCollection.find().toArray();
       res.send(result);
-      console.log(result)
     });
 
 
@@ -207,6 +206,26 @@ app.get('/myPurchase/:email', async (req, res) => {
     const result =await bookingCollection.deleteOne(query);
     res.send(result)
   })    
+
+  //------Discount products get on ui
+  app.get('/discountItems', async (req, res) => {
+    try {
+        // Filter for products with a discount greater than 0
+        const discountProducts = await allCollection.find({ discount: { $gt: 0 } }).toArray();
+        res.json(discountProducts);
+    } catch (error) {
+        console.log('Error Fetching', error);
+        res.status(500).send('Error fetching discount products');
+    }
+});
+  //-------discount products-----
+   app.get('/discountProducts/:id', async (req, res) => {
+    const id = req.params.id
+    const query = { _id: new ObjectId(id) }
+    const result = await allCollection.findOne(query)
+    res.send(result)
+  })
+
 
     // Send a ping to confirm a successful connection
     await client.db('admin').command({ ping: 1 });

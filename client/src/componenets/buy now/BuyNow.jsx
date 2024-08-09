@@ -13,16 +13,15 @@ import 'sweetalert2/dist/sweetalert2.min.css';
 import cow from '../../assets/cow.gif';
 import { MdDone } from 'react-icons/md'; // Importing the 'done' icon
 import useAxiosSecure from '../../hooks/useAxiosSecure';
-import { useNavigate } from 'react-router-dom';
 import {loadStripe} from '@stripe/stripe-js';
 Modal.setAppElement('#root');
 import { Elements } from "@stripe/react-stripe-js";
 import CheckOutForm from '../checkoutForm/CheckOutForm';
+import LoadingSpiner from '../../pages/shared/LoadingSpiner';
 const stripePromise = loadStripe(import.meta.env.VITE_STRIPE_PUBLIC_KEY);
 const BuyNow = () => {
     const { user } = useAuth();
     const { id } = useParams();
-    const axiosCommon = useAxiosCommon();
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalIsOpen2, setModalIsOpen2] = useState(false);
     const [phoneNumber, setPhoneNumber] = useState('');
@@ -32,12 +31,10 @@ const BuyNow = () => {
     const [isBooked, setIsBooked] = useState(false);
     const [dateTime, setDateTime] = useState(''); 
     const axiosSecure = useAxiosSecure();
-    const navigate = useNavigate();
-
-    const { data: buy = {} ,refetch} = useQuery({
+    const { data: buy = {} ,refetch,isLoading} = useQuery({
         queryKey: ['buy', id],
         queryFn: async () => {
-            const res = await axiosCommon.get(`/buy-details/${id}`);
+            const res = await axiosSecure.get(`/buy-details/${id}`);
             return res.data;
         },
     });
@@ -51,21 +48,6 @@ const BuyNow = () => {
     const closeModal = () => setModalIsOpen(false);
     const openModal2 = () => setModalIsOpen2(true);
     const closeModal2 = () => setModalIsOpen2(false);
-
-    const handleBooking = (e) => {
-        e.preventDefault();
-        Swal.fire({
-            icon: 'success',
-            title: 'Booking Done',
-            text: 'Your booking has been successfully completed!',
-        }).then(() => {
-            setIsBooked(true);
-            closeModal();
-        });
-    };
-
-    
-    
     const handleSubmit = async (e) => {
         e.preventDefault();
     };
@@ -111,6 +93,11 @@ const handleBookingNow = async (e) => {
         setLoading(false);
     }
 };
+if(isLoading){
+    return <div className="flex items-center justify-center min-h-screen">
+    <span className="loading text-9xl loading-spinner text-info"></span>
+</div>
+}
 
     return (
         <div className="min-h-screen bg-gradient-to-br from-green-100 to-blue-100 grid place-items-center p-8">

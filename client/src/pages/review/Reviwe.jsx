@@ -39,7 +39,7 @@ const fakeReviews = [
 ];
 
 const ReviewCard = ({ review }) => (
-    <div className="bg-white rounded-lg p-6 shadow-lg border border-gray-200 transform transition-transform hover:scale-105">
+    <div className="bg-white  rounded-lg p-6  shadow-lg border border-gray-200 transform transition-transform hover:scale-105">
         <div className="flex items-center mb-4">
             <img src={review.avatar} alt={review.user} className="h-14 w-14 rounded-full border-2 border-gray-300 mr-4" />
             <div>
@@ -130,7 +130,7 @@ const ReviewCarousel = () => {
     };
 
     return (
-        <div className="container mx-auto px-4 py-8">
+        <div className="container mt-10 mb-10  mx-auto px-4 py-8">
             <h2 className="text-2xl text-center  font-bold mb-6 text-yellow-500">Customer Reviews</h2>
             <Slider {...settings}>
                 {fakeReviews.map((review) => (

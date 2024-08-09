@@ -1,28 +1,27 @@
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import SectionTitle from '../../../../componenets/SectionTitle/SectionTitle';
-import DiscountItem from './DiscountItem';
 import Carousel from 'react-multi-carousel';
 import 'react-multi-carousel/lib/styles.css';
 import { FaStar, FaMapMarkerAlt, FaRegMoneyBillAlt, FaInfoCircle } from 'react-icons/fa';
+import { Link } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
+import useAxiosCommon from '../../../../hooks/useAxiosCommon';
 
 const PopularAnimal = () => {
-  const [discounts, setDiscounts] = useState([]);
+  const axiosCommon = useAxiosCommon(); // Correct the function call to get the axios instance
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const res = await fetch('all.json');
-        const data = await res.json();
-        const discountItems = data.filter(anything => anything.discount > 0);
-        setDiscounts(discountItems);
-      } catch (error) {
-        console.error('Error fetching data:', error);
-      }
-    };
-
-    fetchData();
-  }, []);
-
+  const { data: discountItems = [],isLoading } = useQuery({
+    queryKey: ['discountProducts'],
+    queryFn: async () => {
+      const res = await axiosCommon.get(`/discountItems`);
+      return res.data;
+    },
+  });
+  if(isLoading){
+    return <div className="flex items-center justify-center min-h-screen">
+    <span className="loading text-9xlxl loading-spinner text-info"></span>
+</div>
+}
   const responsive = {
     superLargeDesktop: {
       breakpoint: { max: 4000, min: 3000 },
@@ -47,12 +46,12 @@ const PopularAnimal = () => {
       <SectionTitle heading="Discover Our Discount Animals" subHeading="Yusuf Agro - Quality You Can Trust" />
       <div className='container mx-auto mt-10'>
         <Carousel responsive={responsive} infinite={true} autoPlay={true} autoPlaySpeed={3000}>
-          {discounts.map(item => {
+          {discountItems.map(item => {
             // Calculate the discounted price
             const discountedPrice = item.price - (item.price * (item.discount / 100));
 
             return (
-              <div key={item.id} className="p-4">
+              <div key={item._id} className="p-4">
                 <div className="bg-white rounded-lg shadow-lg overflow-hidden">
                   <img src={item.image} alt={item.name} className="w-full h-48 object-cover" />
                   <div className="p-6">
@@ -73,13 +72,14 @@ const PopularAnimal = () => {
                     <div className="flex items-center mb-4">
                       <FaStar className="text-yellow-500 mr-2" />
                       <span className="text-gray-800">{item.rating}</span>
-                    </div>
-                    <button
-  className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-2 rounded-lg shadow-md w-full hover:from-blue-500 hover:to-green-400 hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
->
-  <FaInfoCircle className="mr-2" /> View Details
-</button>
-
+                    </div> 
+                    <Link to={`/buyNow/${item._id}`}>
+                      <button
+                        className="bg-gradient-to-r from-green-400 to-blue-500 text-white px-6 py-2 rounded-lg shadow-md w-full hover:from-blue-500 hover:to-green-400 hover:shadow-lg transform hover:scale-105 transition-all duration-300 flex items-center justify-center"
+                      >
+                        <FaInfoCircle className="mr-2" /> View Details
+                      </button>
+                    </Link>
                   </div>
                 </div>
               </div>

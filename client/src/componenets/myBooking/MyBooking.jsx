@@ -113,14 +113,15 @@ const MyBooking = () => {
                                 <td className="px-6 py-4 whitespace-nowrap">{new Date(item.date).toLocaleString()}</td>
                                 <td className="px-6 py-4 whitespace-nowrap">
                                     {item.buy.request === 'pending' ? (
-                                        <div className="flex items-center text-yellow-500">
-                                            <FaClock className="text-lg mr-2 animate-pulse" />
-                                            Pending
-                                        </div>
-                                    ) : (
                                         <div className="flex items-center text-green-500">
-                                            <MdPendingActions className="text-lg mr-2" />
-                                            {item.buy.request}
+                                            <MdPendingActions className="text-lg mr-2 animate-pulse" />
+                                            
+                                        </div> 
+                                    ) : (
+                                        <div className="flex items-center text-yellow-500">
+                                            <FaClock className="text-lg mr-2" />
+                                            {item.buy.request}Request Pending 
+                                           
                                         </div>
                                     )}
                                 </td>

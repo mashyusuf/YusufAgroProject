@@ -12,6 +12,7 @@ import AllMarket from "../componenets/allMarket/AllMarket";
 import BuyNow from '../componenets/buy now/BuyNow'
 import MyPurchase from "../componenets/MyPurchase/MyPurchase";
 import MyBooking from "../componenets/myBooking/MyBooking";
+
   export const router = createBrowserRouter([
     {
       path: "/",

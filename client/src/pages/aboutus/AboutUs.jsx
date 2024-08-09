@@ -5,7 +5,7 @@ import camel from '../../assets/camel4.0.jpg';
 
 const AboutUs = () => {
     return (
-        <div className="bg-gray-100 py-12 px-4">
+        <div className="bg-gray-100 py-12 px-4 max-w-7xl mx-auto rounded-md mt-10 mb-10">
             <div className="container mx-auto">
                 {/* Our Vision Section */}
                 <section className="mb-12">
