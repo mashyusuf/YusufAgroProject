@@ -42,9 +42,17 @@ const PopularAnimal = () => {
   };
 
   return (
-    <div className='mt-16 mb-10 bg-cover bg-center' style={{ backgroundImage: 'url(https://example.com/your-background-image.jpg)' }}>
-      <SectionTitle heading="Discover Our Discount Animals" subHeading="Yusuf Agro - Quality You Can Trust" />
-      <div className='container mx-auto mt-10'>
+    <div className='mt-10  bg-cover bg-center' style={{ backgroundImage: 'url(https://example.com/your-background-image.jpg)' }}>
+     <div className="text-center py-8 bg-gray-100">
+  <h1 className="text-3xl font-bold text-yellow-500 mb-2">
+    Special Discounts on Select Products!
+  </h1>
+  <p className="text-lg text-gray-600 mx-auto max-w-3xl">
+    Take advantage of our exclusive discounts on a range of products. Save big on select items and enjoy incredible value. Shop now to get the best deals!
+  </p>
+</div>
+
+      <div className='container mx-auto mt-5'>
         <Carousel responsive={responsive} infinite={true} autoPlay={true} autoPlaySpeed={3000}>
           {discountItems.map(item => {
             // Calculate the discounted price

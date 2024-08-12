@@ -1,13 +1,17 @@
 import { useQuery } from "@tanstack/react-query";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
-import { FaCalendarAlt, FaMoneyCheckAlt,  FaCheckCircle, FaTruck } from 'react-icons/fa';
+import { FaCalendarAlt, FaMoneyCheckAlt, FaCheckCircle, FaTruck, FaFilePdf, FaFileExcel } from 'react-icons/fa';
 import { useEffect } from "react";
+import { Helmet } from "react-helmet-async";
+import jsPDF from 'jspdf';
+import 'jspdf-autotable';
+import * as XLSX from 'xlsx';
 
 const MyPurchase = () => {
     const { user } = useAuth();
     const axiosSecure = useAxiosSecure();
-    const { data: purchase = [],isLoading } = useQuery({
+    const { data: purchase = [], isLoading } = useQuery({
         queryKey: ['purchase'],
         queryFn: async () => {
             const res = await axiosSecure.get(`/myPurchase/${user?.email}`);
@@ -23,14 +27,59 @@ const MyPurchase = () => {
             }
         });
     }, [purchase]);
-    if(isLoading){
+
+    const downloadPDF = () => {
+        const doc = new jsPDF();
+        doc.text("Sales Report", 20, 20);
+        doc.autoTable({
+            head: [['#', 'Image', 'Name', 'Date And Time', 'Transaction Id', 'Deliver']],
+            body: purchase.map((item, index) => [
+                index + 1,
+                '', // Image can't be included directly in PDF using jsPDF
+                item.name,
+                new Date(item.date).toLocaleString(),
+                item.transactionId,
+                item.delivery
+            ]),
+        });
+        doc.save('sales_report.pdf');
+    };
+
+    const downloadExcel = () => {
+        const worksheet = XLSX.utils.json_to_sheet(purchase.map((item, index) => ({
+            '#': index + 1,
+            'Name': item.name,
+            'Date And Time': new Date(item.date).toLocaleString(),
+            'Transaction Id': item.transactionId,
+            'Deliver': item.delivery,
+        })));
+        const workbook = XLSX.utils.book_new();
+        XLSX.utils.book_append_sheet(workbook, worksheet, 'Sales Report');
+        XLSX.writeFile(workbook, 'sales_report.xlsx');
+    };
+
+    if (isLoading) {
         return <div className="flex items-center justify-center min-h-screen">
-        <span className="loading text-9xl loading-spinner text-info"></span>
-    </div>
+            <span className="loading text-9xl loading-spinner text-info"></span>
+        </div>
     }
+
     return (
         <div className="p-4">
+            <Helmet>
+                <title>Yusuf's Agro | My Purchase</title>
+            </Helmet>
             <h1 className="text-3xl text-center font-bold mb-6 text-gradient">Total Purchases: {purchase.length}</h1>
+
+            <div className="flex justify-end gap-4 mb-4">
+                <button onClick={downloadPDF} className="btn btn-red">
+                    <FaFilePdf className="mr-2" /> Download PDF
+                </button>
+                <button onClick={downloadExcel} className="btn btn-green">
+                    <FaFileExcel className="mr-2" /> Download Excel
+                </button>
+            </div>
+
             <div className="overflow-x-auto bg-white shadow-md rounded-lg">
                 <table className="table-auto w-full text-center">
                     <thead className="bg-gradient-to-r from-green-400 to-blue-500 text-white">
@@ -51,7 +100,6 @@ const MyPurchase = () => {
                                     <div className="flex justify-center items-center gap-3">
                                         <div className="avatar">
                                             <div className="mask mask-squircle h-14 w-14">
-                                                {/* Check if the image URL is valid */}
                                                 <img src={item.image} alt="Animal" className="object-cover w-full h-full" />
                                             </div>
                                         </div>

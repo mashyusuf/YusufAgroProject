@@ -20,9 +20,9 @@ const Content = () => {
     };
 
     return (
-        <section className="bg-gradient-to-r from-sky-300 to-sky-100 max-w-7xl mx-auto rounded-md  mb-10 py-12 mt-10">
+        <section className="bg-gradient-to-r  max-w-7xl mx-auto rounded-md  mb-5 py-12 mt-5">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl font-bold text-center mb-8 text-teal-700">Care Guides</h2>
+                <h2 className="text-3xl font-bold text-center mb-8 text-yellow-500">Care Guides</h2>
                 <p className="text-center mb-12 text-gray-700">Learn how to care for our animals with our comprehensive guides.</p>
                 <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-8">
                     {/* Cow Care Guide */}

@@ -5,11 +5,11 @@ import camel from '../../assets/camel4.0.jpg';
 
 const AboutUs = () => {
     return (
-        <div className="bg-gray-100 py-12 px-4 max-w-7xl mx-auto rounded-md mt-10 mb-10">
+        <div className="bg-gray-100 py-12 px-4 max-w-7xl mx-auto rounded-md">
             <div className="container mx-auto">
                 {/* Our Vision Section */}
                 <section className="mb-12">
-                    <h1 className='text-5xl text-center text-yellow-500 font-bold mb-10'>About Us</h1>
+                    <h1 className='text-3xl text-center text-yellow-500 font-bold mb-10'>About Us</h1>
                     <div className="flex flex-col gap-5 lg:flex-row items-center lg:justify-between animate-fade-in">
                         
                         <div className="lg:w-1/2 mb-6 lg:mb-0 p-6 bg-white shadow-lg  rounded-lg hover:bg-blue-50 transition-colors duration-300">

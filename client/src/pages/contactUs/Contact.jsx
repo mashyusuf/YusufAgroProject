@@ -23,12 +23,12 @@ const ContactUs = () => {
     };
 
     return (
-        <section className="bg-gradient-to-r from-sky-300 max-w-7xl mx-auto rounded-md mt-10 mb-10 to-sky-100 py-12">
+        <section className=" max-w-7xl mx-auto rounded-md mt-5 mb-5 py-12">
             <div className="container mx-auto px-4">
-                <h2 className="text-3xl font-bold text-center mb-8 text-teal-800">Contact Us</h2>
+                <h2 className="text-3xl font-bold text-center mb-2 text-yellow-500">Contact Us</h2>
                 <p className="text-center mb-12 text-gray-700">We'd love to hear from you! Please fill out the form below and we'll get in touch with you shortly.</p>
                 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-12">
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-5">
                     <div className="flex flex-col items-center">
                         <FaMapMarkerAlt className="text-4xl text-teal-800 mb-4" />
                         <h3 className="text-xl font-semibold mb-2 text-teal-900">ADDRESS</h3>

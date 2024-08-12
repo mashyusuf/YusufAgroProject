@@ -69,7 +69,7 @@ const Navbar = () => {
     <div className="bg-gradient-to-r from-sky-200 to-sky-300">
       <div className="navbar bg-gradient-to-r from-sky-200 to-sky-400 flex justify-between items-center px-4 py-2">
         {/* Logo and brand name */}
-        <Link to="/" className="flex items-center">
+        <Link to="/" className="flex items-center space-x-3">
           <img src={logo} alt="Yusuf Agro Logo" className="w-24 h-auto rounded-full lg:ml-0" />
           <span className="text-teal-700 text-2xl font-bold ml-2 lg:ml-0">YUSUF AGRO</span>
         </Link>

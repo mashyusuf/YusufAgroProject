@@ -12,6 +12,7 @@ import AllMarket from "../componenets/allMarket/AllMarket";
 import BuyNow from '../componenets/buy now/BuyNow'
 import MyPurchase from "../componenets/MyPurchase/MyPurchase";
 import MyBooking from "../componenets/myBooking/MyBooking";
+import PrivateRoute from "./PrivateRouter";
 
   export const router = createBrowserRouter([
     {
@@ -33,15 +34,15 @@ import MyBooking from "../componenets/myBooking/MyBooking";
         },
         {
             path: '/buyNow/:id',
-            element: <BuyNow></BuyNow>
+            element: <PrivateRoute><BuyNow></BuyNow></PrivateRoute>
         },
         {
             path: '/purchase',
-            element: <MyPurchase></MyPurchase>
+            element:<PrivateRoute> <MyPurchase></MyPurchase></PrivateRoute>
         },
         {
             path: '/booking',
-            element: <MyBooking></MyBooking>
+            element: <PrivateRoute><MyBooking></MyBooking></PrivateRoute>
         },
         {
           path: '/login', element: <Login />

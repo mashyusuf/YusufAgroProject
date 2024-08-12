@@ -1,17 +1,18 @@
+
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import { useState } from 'react';
-import PropTypes from 'prop-types';
 import Slider from 'react-slick';
+import PropTypes from 'prop-types';
 import { SiHappycow } from 'react-icons/si';
 import { GiGoat, GiCamelHead, GiBuffaloHead } from 'react-icons/gi';
 
 // Icons for different types of reviews
 const icons = {
-    cow: <SiHappycow className="text-green-500 text-3xl" />,
-    goat: <GiGoat className="text-yellow-500 text-3xl" />,
-    buffalo: <GiBuffaloHead className="text-red-500 text-3xl" />,
-    camel: <GiCamelHead className="text-blue-500 text-3xl" />,
+    cow: <SiHappycow className="text-green-500 text-4xl" />,
+    goat: <GiGoat className="text-yellow-500 text-4xl" />,
+    buffalo: <GiBuffaloHead className="text-red-500 text-4xl" />,
+    camel: <GiCamelHead className="text-blue-500 text-4xl" />,
 };
 
 // Sample review data
@@ -38,89 +39,23 @@ const fakeReviews = [
     { id: 20, user: 'Mason Scott', avatar: 'https://randomuser.me/api/portraits/men/19.jpg', rating: 3.5, review: 'The product was okay, but delivery was a bit slow.', type: 'camel' },
 ];
 
-const ReviewCard = ({ review }) => (
-    <div className="bg-white  rounded-lg p-6  shadow-lg border border-gray-200 transform transition-transform hover:scale-105">
-        <div className="flex items-center mb-4">
-            <img src={review.avatar} alt={review.user} className="h-14 w-14 rounded-full border-2 border-gray-300 mr-4" />
-            <div>
-                <h3 className="text-xl font-bold text-gray-800">{review.user}</h3>
-                <div className="flex items-center mt-1">
-                    <span className="text-yellow-500">
-                        {[...Array(Math.floor(review.rating))].map((_, index) => (
-                            <svg
-                                key={index}
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 fill-current"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10 1l2.602 5.777H18l-4.146 3.75L15.79 18 10 14.573 4.21 18l1.936-6.473L2 6.777h5.398L10 1z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        ))}
-                        {[...Array(5 - Math.floor(review.rating))].map((_, index) => (
-                            <svg
-                                key={index}
-                                xmlns="http://www.w3.org/2000/svg"
-                                className="h-6 w-6 fill-current text-gray-300"
-                                viewBox="0 0 20 20"
-                            >
-                                <path
-                                    fillRule="evenodd"
-                                    d="M10 1l2.602 5.777H18l-4.146 3.75L15.79 18 10 14.573 4.21 18l1.936-6.473L2 6.777h5.398L10 1z"
-                                    clipRule="evenodd"
-                                />
-                            </svg>
-                        ))}
-                    </span>
-                    <span className="ml-2 text-gray-600">({review.rating})</span>
-                </div>
-                <div className="mt-2 flex items-center text-gray-500">
-                    {icons[review.type]} <span className="ml-2">Type: {review.type}</span>
-                </div>
-            </div>
-        </div>
-        <p className="text-gray-700 mt-2">{review.review}</p>
-    </div>
-);
-
-ReviewCard.propTypes = {
-    review: PropTypes.shape({
-        id: PropTypes.number.isRequired,
-        user: PropTypes.string.isRequired,
-        avatar: PropTypes.string.isRequired,
-        rating: PropTypes.number.isRequired,
-        review: PropTypes.string.isRequired,
-        type: PropTypes.string.isRequired,
-    }).isRequired,
-};
-
 const ReviewCarousel = () => {
     const settings = {
         dots: true,
         infinite: true,
         speed: 500,
-        slidesToShow: 4,
+        slidesToShow: 3,
         slidesToScroll: 1,
         responsive: [
             {
                 breakpoint: 1024,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 1,
-                },
-            },
-            {
-                breakpoint: 768,
                 settings: {
                     slidesToShow: 2,
                     slidesToScroll: 1,
                 },
             },
             {
-                breakpoint: 480,
+                breakpoint: 768,
                 settings: {
                     slidesToShow: 1,
                     slidesToScroll: 1,
@@ -130,12 +65,56 @@ const ReviewCarousel = () => {
     };
 
     return (
-        <div className="container mt-10 mb-10  mx-auto px-4 py-8">
-            <h2 className="text-2xl text-center  font-bold mb-6 text-yellow-500">Customer Reviews</h2>
+        <div className="container mx-auto px-4 py-8">
+            <h2 className="text-3xl font-bold text-center text-yellow-600 mb-6">What Our Customers Are Saying</h2>
             <Slider {...settings}>
                 {fakeReviews.map((review) => (
-                    <div key={review.id} className="p-4">
-                        <ReviewCard review={review} />
+                    <div key={review.id} className="px-4 py-2">
+                        <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-200 transform transition-transform hover:scale-105 hover:shadow-2xl">
+                            <div className="flex items-center mb-4">
+                                <img src={review.avatar} alt={review.user} className="h-16 w-16 rounded-full border-4 border-gray-300 mr-4" />
+                                <div>
+                                    <h3 className="text-2xl font-semibold text-gray-800">{review.user}</h3>
+                                    <div className="flex items-center mt-1">
+                                        <span className="text-yellow-500">
+                                            {[...Array(Math.floor(review.rating))].map((_, index) => (
+                                                <svg
+                                                    key={index}
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-6 w-6 fill-current"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 1l2.602 5.777H18l-4.146 3.75L15.79 18 10 14.573 4.21 18l1.936-6.473L2 6.777h5.398L10 1z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            ))}
+                                            {[...Array(5 - Math.floor(review.rating))].map((_, index) => (
+                                                <svg
+                                                    key={index}
+                                                    xmlns="http://www.w3.org/2000/svg"
+                                                    className="h-6 w-6 fill-current text-gray-300"
+                                                    viewBox="0 0 20 20"
+                                                >
+                                                    <path
+                                                        fillRule="evenodd"
+                                                        d="M10 1l2.602 5.777H18l-4.146 3.75L15.79 18 10 14.573 4.21 18l1.936-6.473L2 6.777h5.398L10 1z"
+                                                        clipRule="evenodd"
+                                                    />
+                                                </svg>
+                                            ))}
+                                        </span>
+                                        <span className="ml-2 text-gray-600 text-lg">({review.rating})</span>
+                                    </div>
+                                    <div className="mt-2 flex items-center text-gray-600">
+                                        {icons[review.type]} <span className="ml-2 text-lg font-medium">Type: {review.type}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            <p className="text-gray-700 mt-2 text-lg leading-relaxed">{review.review}</p>
+                        </div>
                     </div>
                 ))}
             </Slider>

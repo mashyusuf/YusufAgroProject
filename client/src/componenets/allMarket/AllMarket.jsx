@@ -54,7 +54,7 @@ const AllMarket = () => {
     return (
         <div>
             <Helmet>
-                <title>Item House | Shop House</title>
+                <title>Yusuf's Agro | Market</title>
             </Helmet>
             <h1 className="text-3xl font-bold text-center my-8">Currently Available Animals: {allData.length}</h1>
             <div className="flex flex-col md:flex-row justify-evenly items-center mb-10 space-y-4 md:space-y-0">

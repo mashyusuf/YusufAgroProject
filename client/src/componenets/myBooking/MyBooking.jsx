@@ -5,6 +5,7 @@ import { MdEmail, MdPhone, MdPerson, MdPendingActions } from "react-icons/md";
 import { BsCalendarDate } from "react-icons/bs";
 import useAxiosSecure from "../../hooks/useAxiosSecure";
 import useAuth from "../../hooks/useAuth";
+import { Helmet } from "react-helmet-async";
 
 const MyBooking = () => {
     const { user } = useAuth();
@@ -78,6 +79,9 @@ const MyBooking = () => {
 
     return (
         <div className="p-6">
+            <Helmet>
+                <title>Yusuf's Agro | My Booking</title>
+            </Helmet>
             <h1 className="text-4xl font-bold text-center mb-6 text-blue-600">My Bookings ({bookingItem.length})</h1>
             <div className="overflow-x-auto shadow-md rounded-lg border border-gray-300">
                 <table className="min-w-full divide-y divide-gray-200">
