@@ -10,7 +10,9 @@ const port = process.env.PORT || 8000;
 
 // Middleware
 const corsOptions = {
-  origin: ['http://localhost:5173', 'http://localhost:5174'],
+  origin: ['http://localhost:5173', 'http://localhost:5174',
+    'https://yusuf-agro.web.app', 
+    'https://yusuf-agro.firebaseapp.com'],
   credentials: true,
   optionSuccessStatus: 200,
 };
@@ -229,7 +231,7 @@ app.get('/myPurchase/:email', async (req, res) => {
 
     // Send a ping to confirm a successful connection
     //await client.db('admin').command({ ping: 1 });
-    console.log('Pinged your deployment. You successfully connected to MongoDB!');
+   // console.log('Pinged your deployment. You successfully connected to MongoDB!');
   } finally {
     // Ensures that the client will close when you finish/error
   }
