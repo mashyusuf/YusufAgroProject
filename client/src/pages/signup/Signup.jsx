@@ -74,7 +74,7 @@ const SignUp = () => {
         <div className="flex flex-col justify-center">
           <div className="text-center mb-8">
             <h1 className="text-4xl font-bold text-green-800">Sign Up</h1>
-            <p className="text-xl font-bold text-gray-700">Welcome to Yusuf's Agro</p>
+            <Link to={'/'}><p className="text-xl font-bold text-gray-700">Welcome to Yusuf's Agro</p></Link>
             <p className="text-lg text-gray-600">Join us in growing a greener future!</p>
             <GiFarmer className="text-green-600 mx-auto mt-4" size={48} />
           </div>

@@ -49,7 +49,6 @@ const client = new MongoClient(uri, {
 
 async function run() {
   try {
-    await client.connect()
     const categoryCollection = client.db('yusufagrodb').collection('category');
     const allCollection = client.db('yusufagrodb').collection('animal')
     const buyCollection = client.db('yusufagrodb').collection('buy-now')

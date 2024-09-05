@@ -62,9 +62,10 @@ const Login = () => {
     <div className='min-h-screen bg-gradient-to-r from-blue-500 to-purple-500 flex items-center justify-center'>
       <div className='grid grid-cols-1 md:grid-cols-2 gap-6 bg-white shadow-lg rounded-lg overflow-hidden max-w-4xl w-full'>
         <div className='relative flex flex-col justify-center items-center bg-gradient-to-br from-yellow-400 to-yellow-600 text-white p-8'>
+          <Link to={'/'}>
           <img src={logo} className='w-24 mb-4' alt="Logo" />
           <h1 className='text-3xl font-bold mb-4'>Welcome Back</h1>
-          <p className='text-lg mb-6'>Manage your shop efficiently with our platform</p>
+          <p className='text-lg mb-6'>Manage your shop efficiently with our platform</p></Link>
          
         </div>
         <div className='p-8'>
